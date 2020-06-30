@@ -1,0 +1,3 @@
+usr/include/librepo
+usr/lib/*/librepo.so
+usr/lib/*/pkgconfig/librepo.pc

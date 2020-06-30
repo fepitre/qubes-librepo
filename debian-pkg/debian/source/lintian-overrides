@@ -1,0 +1,4 @@
+# We delete these files in debian/rules because they are auto-generated from
+# librepo/version.h.in and doc/c/Doxyfile.in.in, but the upstream tarball still
+# includes them, so we'd better properly document it.
+librepo: wildcard-matches-nothing-in-dep5-copyright

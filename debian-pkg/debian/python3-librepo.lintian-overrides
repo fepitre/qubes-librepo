@@ -1,0 +1,4 @@
+# The activation might very well be unnecessary, but debhelper generates it
+# nonetheless and there is no good way to avoid it.
+# So... avoid the warning, I guess?
+python3-librepo: package-has-unnecessary-activation-of-ldconfig-trigger

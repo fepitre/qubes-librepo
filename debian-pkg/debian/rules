@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+# export DH_VERBOSE = 1
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/default.mk
+
+%:
+	dh "${@}" --parallel --buildsystem=cmake --with=python3
+
+override_dh_auto_configure:
+	dh_auto_configure --builddirectory=build -- -DENABLE_DOCS:BOOL=ON -DENABLE_TESTS:BOOL=ON -DWITH_ZCHUNK:BOOL=OFF -DPYTHON_DESIRED:STRING=3
+
+override_dh_auto_build:
+	dh_auto_build --builddirectory=build -- all doc
+
+override_dh_auto_install:
+	dh_auto_install --builddirectory=build
+	# Use system-provides files.
+	rm -fv 'build/doc/python/_static/jquery.js' 'build/doc/python/_static/underscore.js' \
+	       'build/doc/c/html/jquery.js'
+
+override_dh_auto_clean:
+	rm -rfv 'librepo/version.h'
+	rm -rfv 'doc/c/Doxyfile.in'
+	dh_auto_clean --builddirectory=build
+
+override_dh_auto_test:
+	dh_auto_test --builddirectory=build
+
+override_dh_missing:
+	dh_missing --fail-missing
+
+override_dh_install:
+	if dpkg --compare-versions "$$(dpkg-query -f='$${Version}' --show 'debhelper')" 'ge' '12'; then \
+		dh_install; \
+	else \
+		dh_install --fail-missing ; \
+	fi
