@@ -1,0 +1,20 @@
+Description: Make documentation builds reproducible.
+Author: Mihai Moldovan <ionic@ionic.de>
+
+Doxygen includes the full path to sources in its documentation by default,
+which makes builds non-reproducible.
+
+Instruct it to use the shortest possible path that makes file names unique
+instead.
+
+--- a/doc/c/Doxyfile.in.in
++++ b/doc/c/Doxyfile.in.in
+@@ -129,7 +129,7 @@ INLINE_INHERITED_MEMB  = NO
+ # path before files name in the file list and in the header files. If set
+ # to NO the shortest path that makes the file name unique will be used.
+ 
+-FULL_PATH_NAMES        = YES
++FULL_PATH_NAMES        = NO
+ 
+ # If the FULL_PATH_NAMES tag is set to YES then the STRIP_FROM_PATH tag
+ # can be used to strip a user-defined part of the path. Stripping is

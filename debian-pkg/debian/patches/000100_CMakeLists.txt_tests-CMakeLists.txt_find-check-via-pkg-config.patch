@@ -1,0 +1,33 @@
+Description: Search for libcheck via pkg-config instead of cmake; use static version.
+Author: Mihai Moldovan <ionic@ionic.de>
+
+Within Debian, only the static libcheck library is shipped. cmake's find script
+will find that, but not use it correctly since the static library requires
+additional private libraries and definitions.
+
+Getting these via pkg-config is trivial, so switch to using this system
+instead.
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -86,7 +86,7 @@ FIND_PACKAGE (PythonLibs REQUIRED)
+ ADD_SUBDIRECTORY (librepo)
+ 
+ IF (ENABLE_TESTS)
+-  FIND_LIBRARY(CHECK_LIBRARY NAMES check)
++  PKG_CHECK_MODULES(CHECK check REQUIRED)
+   ENABLE_TESTING()
+   ADD_SUBDIRECTORY (tests)
+ ENDIF (ENABLE_TESTS)
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -24,7 +24,8 @@ SET (librepotest_SRCS
+ ADD_EXECUTABLE(test_main ${librepotest_SRCS})
+ TARGET_LINK_LIBRARIES(test_main
+     librepo
+-    ${CHECK_LIBRARY}
++    ${CHECK_STATIC_LIBRARIES}
++    ${CHECK_STATIC_LDFLAGS}
+     )
+ CONFIGURE_FILE("run_tests.sh.in"  "${CMAKE_BINARY_DIR}/tests/run_tests.sh")
+ ADD_TEST(test_main run_tests.sh)

@@ -1,0 +1,97 @@
+Source: librepo
+Section: libs
+Priority: optional
+Maintainer: Mihai Moldovan <ionic@ionic.de>
+Uploaders: Frédéric Pierret <frederic.pierret@qubes-os.org>
+Build-Depends: debhelper (>= 9~),
+ dh-python,
+ python3-dev,
+ libpython3-dev,
+ cmake,
+ pkg-config,
+ libglib2.0-dev,
+ libssl-dev,
+ libcurl4-gnutls-dev,
+ doxygen,
+ libattr1-dev,
+ libgpgme-dev,
+ python3-sphinx,
+ check,
+ libxml2-dev,
+ python3-flask,
+ python3-nose,
+ python3-pyxattr,
+ python3-gpg,
+Standards-Version: 4.4.0.1
+Homepage: https://github.com/rpm-software-management/librepo
+Vcs-Browser: https://github.com/rpm-software-management/librepo
+Vcs-Git: https://github.com/rpm-software-management/librepo.git
+#Testsuite: autopkgtest-pkg-python
+
+Package: librepo-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends},
+ librepo0 (= ${binary:Version}),
+ pkg-config,
+ libglib2.0-dev,
+ libssl-dev,
+ libcurl4-gnutls-dev,
+ libattr1-dev,
+ libgpgme-dev,
+Suggests: librepo-doc
+Description: librepo - development files
+ A library providing C and Python (libcURL-like) APIs to
+ download repository metadata.
+ .
+ This package contains the development header files for the
+ librepo library.
+
+Package: librepo0
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends},
+Description: librepo - shared library
+ A library providing C and Python (libcURL-like) APIs to
+ download repository metadata.
+ .
+ This package provides the librepo shared library.
+
+Package: librepo-doc
+Architecture: all
+Multi-Arch: foreign
+Section: doc
+Depends: ${misc:Depends},
+Description: Documentation for the librepo library (common documentation)
+ A library providing C and Python (libcURL-like) APIs to
+ download repository metadata.
+ .
+ This package installs common documentation for the librepo
+ C bindings.
+
+Package: python3-librepo
+Architecture: any
+Multi-Arch: no
+Section: python
+Depends: ${python3:Depends}, ${shlibs:Depends}, ${misc:Depends},
+ librepo0 (= ${binary:Version}),
+ python3-distutils | libpython3-stdlib (<< 3.7~),
+Suggests: python3-librepo-doc
+Description: Python bindings for the librepo library (Python 3)
+ A library providing C and Python (libcURL-like) APIs to
+ download repository metadata.
+ .
+ This package installs the librepo library for Python 3.
+
+Package: python3-librepo-doc
+Architecture: all
+Multi-Arch: foreign
+Section: doc
+Depends: ${sphinxdoc:Depends}, ${misc:Depends},
+Description: Python 3 bindings for the librepo library (common documentation)
+ A library providing C and Python (libcURL-like) APIs to
+ download repository metadata.
+ .
+ This package installs common documentation for the librepo Python
+ 3 bindings.

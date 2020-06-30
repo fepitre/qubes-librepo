@@ -1,0 +1,3 @@
+000001_doc-python-CMakeLists.txt_support-python23-sphinx.patch
+000100_CMakeLists.txt_tests-CMakeLists.txt_find-check-via-pkg-config.patch
+700000_doc_c_Doxyfile.in.in_help-reproducible-builds.patch

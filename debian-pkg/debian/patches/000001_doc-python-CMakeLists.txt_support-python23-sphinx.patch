@@ -1,0 +1,13 @@
+Description: Use the correct sphinx-build script, based upon python value.
+Author: Mihai Moldovan <ionic@ionic.de>
+
+--- a/doc/python/CMakeLists.txt
++++ b/doc/python/CMakeLists.txt
+@@ -1,5 +1,6 @@
++set (SPHINX_BUILD "/usr/share/sphinx/scripts/python${PYTHON_DESIRED}/sphinx-build")
+ ADD_CUSTOM_TARGET (doc-python
+-    PYTHONPATH=${CMAKE_BINARY_DIR}/librepo/python/python${PYTHON_VERSION_MAJOR} sphinx-build -E -b html
++    PYTHONPATH=${CMAKE_BINARY_DIR}/librepo/python/python${PYTHON_VERSION_MAJOR} ${SPHINX_BUILD} -E -b html
+                   ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
+                   COMMENT "Building Python API documentation with Sphinx")
+ 

@@ -1,0 +1,5 @@
+AUTHORS
+README.md
+build/doc/python/*.html
+build/doc/python/_sources
+build/doc/python/_static
