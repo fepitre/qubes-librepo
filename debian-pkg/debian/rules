@@ -11,7 +11,7 @@ include /usr/share/dpkg/default.mk
 	dh "${@}" --parallel --buildsystem=cmake --with=python3
 
 override_dh_auto_configure:
-	dh_auto_configure --builddirectory=build -- -DENABLE_DOCS:BOOL=ON -DENABLE_TESTS:BOOL=ON -DWITH_ZCHUNK:BOOL=OFF -DPYTHON_DESIRED:STRING=3
+	dh_auto_configure --builddirectory=build -- -DENABLE_DOCS:BOOL=ON -DENABLE_TESTS:BOOL=ON -DPYTHON_DESIRED:STRING=3
 
 override_dh_auto_build:
 	dh_auto_build --builddirectory=build -- all doc
