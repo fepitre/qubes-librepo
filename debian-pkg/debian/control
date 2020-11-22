@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Maintainer: Mihai Moldovan <ionic@ionic.de>
 Uploaders: Frédéric Pierret <frederic.pierret@qubes-os.org>
-Build-Depends: debhelper (>= 9~),
+Build-Depends: debhelper (>= 10~),
  dh-python,
  python3-dev,
  libpython3-dev,
