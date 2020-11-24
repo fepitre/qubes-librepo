@@ -1,0 +1,93 @@
+From 9d84cb5987e5df3a004c93eba5744c7981bd0647 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Pierret=20=28fepitre=29?=
+ <frederic.pierret@qubes-os.org>
+Date: Tue, 24 Nov 2020 11:14:49 +0100
+Subject: [PATCH] Set CMAKE_SKIP_RPATH to TRUE
+
+When skipping RPATH make doc raise:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sphinx/config.py", line 368, in eval_config_file
+    execfile_(filename, namespace)
+  File "/usr/lib/python3/dist-packages/sphinx/util/pycompat.py", line 150, in execfile_
+    exec_(code, _globals)
+  File "/home/user/librepo/doc/python/conf.py", line 15, in <module>
+    import librepo
+  File "/home/user/librepo/build/librepo/python/python3/librepo/__init__.py", line 1081, in <module>
+    import librepo._librepo
+ImportError: librepo.so.0: cannot open shared object file: No such file or directory
+
+A fix is to set properly LD_LIBRARY_PATH in sphinx env call
+---
+ doc/python/CMakeLists.txt             | 2 +-
+ librepo/CMakeLists.txt                | 2 ++
+ librepo/python/CMakeLists.txt         | 2 ++
+ librepo/python/python2/CMakeLists.txt | 2 ++
+ librepo/python/python3/CMakeLists.txt | 2 ++
+ 5 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/doc/python/CMakeLists.txt b/doc/python/CMakeLists.txt
+index 74bf55c..3af9366 100644
+--- a/doc/python/CMakeLists.txt
++++ b/doc/python/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ ADD_CUSTOM_TARGET (doc-python
+-    PYTHONPATH=${CMAKE_BINARY_DIR}/librepo/python/python${PYTHON_VERSION_MAJOR} sphinx-build -E -b html
++    LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/librepo PYTHONPATH=${CMAKE_BINARY_DIR}/librepo/python/python${PYTHON_VERSION_MAJOR} sphinx-build -E -b html
+                   ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
+                   COMMENT "Building Python API documentation with Sphinx")
+ 
+diff --git a/librepo/CMakeLists.txt b/librepo/CMakeLists.txt
+index 73edf70..f27d03f 100644
+--- a/librepo/CMakeLists.txt
++++ b/librepo/CMakeLists.txt
+@@ -61,6 +61,8 @@ SET_TARGET_PROPERTIES(librepo PROPERTIES OUTPUT_NAME "repo")
+ SET_TARGET_PROPERTIES(librepo PROPERTIES SOVERSION 0)
+ #SET_TARGET_PROPERTIES(librepo PROPERTIES VERSION "0")
+ 
++SET(CMAKE_SKIP_RPATH TRUE)
++
+ CONFIGURE_FILE("librepo.pc.cmake" "${CMAKE_BINARY_DIR}/librepo.pc" @ONLY)
+ CONFIGURE_FILE("version.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/version.h" @ONLY)
+ 
+diff --git a/librepo/python/CMakeLists.txt b/librepo/python/CMakeLists.txt
+index 38e6c9f..7e2478d 100644
+--- a/librepo/python/CMakeLists.txt
++++ b/librepo/python/CMakeLists.txt
+@@ -14,5 +14,7 @@ SET (librepomodule_SRCS
+      ${pylibrepo_SRCDIR}/typeconversion.c
+      ${pylibrepo_SRCDIR}/yum-py.c)
+ 
++SET(CMAKE_SKIP_RPATH TRUE)
++
+ MESSAGE("Building for python${PYTHON_VERSION_MAJOR}")
+ ADD_SUBDIRECTORY(python${PYTHON_VERSION_MAJOR})
+diff --git a/librepo/python/python2/CMakeLists.txt b/librepo/python/python2/CMakeLists.txt
+index a0f1f9a..3f09a32 100644
+--- a/librepo/python/python2/CMakeLists.txt
++++ b/librepo/python/python2/CMakeLists.txt
+@@ -12,6 +12,8 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-strict-aliasing")
+ set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fno-strict-aliasing")
+ set (CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fno-strict-aliasing")
+ 
++SET(CMAKE_SKIP_RPATH TRUE)
++
+ SET (librepo_COPIES ${pylibrepo_SRCDIR}/__init__.py)
+ FILE(COPY ${librepo_COPIES} DESTINATION ./librepo/)
+ 
+diff --git a/librepo/python/python3/CMakeLists.txt b/librepo/python/python3/CMakeLists.txt
+index 52ba44e..a4c247c 100644
+--- a/librepo/python/python3/CMakeLists.txt
++++ b/librepo/python/python3/CMakeLists.txt
+@@ -12,6 +12,8 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-strict-aliasing")
+ set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fno-strict-aliasing")
+ set (CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fno-strict-aliasing")
+ 
++SET(CMAKE_SKIP_RPATH TRUE)
++
+ SET (librepo_COPIES ${pylibrepo_SRCDIR}/__init__.py)
+ FILE(COPY ${librepo_COPIES} DESTINATION ./librepo/)
+ 
+-- 
+2.26.2
+
