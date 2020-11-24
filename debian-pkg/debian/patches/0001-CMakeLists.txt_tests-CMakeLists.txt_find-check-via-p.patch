@@ -1,5 +1,7 @@
-Description: Search for libcheck via pkg-config instead of cmake; use static version.
-Author: Mihai Moldovan <ionic@ionic.de>
+From 789f4493ce90757d75888bb716ea7bd15f3846ed Mon Sep 17 00:00:00 2001
+From: Mihai Moldovan <ionic@ionic.de>
+Date: Tue, 24 Nov 2020 11:26:00 +0100
+Subject: [PATCH] Search for libcheck via pkg-config instead of cmake; use static version
 
 Within Debian, only the static libcheck library is shipped. cmake's find script
 will find that, but not use it correctly since the static library requires
@@ -7,7 +9,13 @@ additional private libraries and definitions.
 
 Getting these via pkg-config is trivial, so switch to using this system
 instead.
+---
+ CMakeLists.txt       | 2 +-
+ tests/CMakeLists.txt | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e949dbe..9499362 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -86,7 +86,7 @@ FIND_PACKAGE (PythonLibs REQUIRED)
@@ -19,6 +27,8 @@ instead.
    ENABLE_TESTING()
    ADD_SUBDIRECTORY (tests)
  ENDIF (ENABLE_TESTS)
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 584e56e..3932e86 100644
 --- a/tests/CMakeLists.txt
 +++ b/tests/CMakeLists.txt
 @@ -24,7 +24,8 @@ SET (librepotest_SRCS
@@ -31,3 +41,6 @@ instead.
      )
  CONFIGURE_FILE("run_tests.sh.in"  "${CMAKE_BINARY_DIR}/tests/run_tests.sh")
  ADD_TEST(test_main run_tests.sh)
+-- 
+2.26.2
+

@@ -1,12 +1,19 @@
-Description: Make documentation builds reproducible.
-Author: Mihai Moldovan <ionic@ionic.de>
+From af9ca12b303dd8759b4c3d8a6e504e0d696aafc4 Mon Sep 17 00:00:00 2001
+From: Mihai Moldovan <ionic@ionic.de>
+Date: Tue, 24 Nov 2020 11:26:00 +0100
+Subject: [PATCH] Make documentation builds reproducible
 
 Doxygen includes the full path to sources in its documentation by default,
 which makes builds non-reproducible.
 
 Instruct it to use the shortest possible path that makes file names unique
 instead.
+---
+ doc/c/Doxyfile.in.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/doc/c/Doxyfile.in.in b/doc/c/Doxyfile.in.in
+index 4ffffd6..086b386 100644
 --- a/doc/c/Doxyfile.in.in
 +++ b/doc/c/Doxyfile.in.in
 @@ -129,7 +129,7 @@ INLINE_INHERITED_MEMB  = NO
@@ -18,3 +25,6 @@ instead.
  
  # If the FULL_PATH_NAMES tag is set to YES then the STRIP_FROM_PATH tag
  # can be used to strip a user-defined part of the path. Stripping is
+-- 
+2.26.2
+
